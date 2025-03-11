@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anthracite Coal</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body.dark-mode {
+            background-color: #121212;
+            color: white;
+        }
+        .navbar.dark-mode {
+            background-color: #1e1e1e;
+        }
+        .category-details-container.dark-mode {
+            background-color: #222;
+            color: white;
+        }
+        .card.dark-mode {
+            background-color: #333;
+        }
+        .data-section.dark-mode table {
+            background-color: #2a2a2a;
+            color: white;
+        }
+        .data-section table tbody tr:hover {
+            background-color: #444;
+            color: white;
+        }
+        .data-section table {
+            color: black;
+        }
+        .theme-toggle {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: inherit;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">Anthracite Coal</div>
+        <div class="navbar-links">
+            <a href="dashboard.html">Back to Dashboard</a>
+            <button id="logout-button">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="category-details-container">
+        <h1>Anthracite Coal</h1>
+
+        <!-- Description and Key Data -->
+        <section class="description-section">
+            <p><strong>Description:</strong> Anthracite is the highest rank of coal with the highest carbon content.</p>
+            <p><strong>Availability:</strong> Limited availability</p>
+            <p><strong>Cost:</strong> INR 8,715/ton</p>
+            <p><strong>Production:</strong> 500,000 tons/year</p>
+        </section>
+
+        <!-- Cards Section -->
+        <section class="cards-section">
+            <!-- Cost Predicted Card -->
+            <div class="card cost-card">
+                <h2>Cost Predicted</h2>
+                <p><strong>Total:</strong> INR 26,147</p>
+                <p><strong>Electricity:</strong> INR 17,443</p>
+                <p><strong>Gas:</strong>INR 8,715 </p>
+            </div>
+
+            <!-- Usage Estimate Card -->
+            <div class="card usage-card">
+                <h2>Usage Estimate</h2>
+                <p><strong>Today:</strong> 75.5 kWh</p>
+                <p><strong>This Month:</strong> 220 kWh</p>
+            </div>
+
+            <!-- Emissions Card -->
+            <div class="card emissions-card">
+                <h2>Emissions</h2>
+                <p><strong>Today:</strong> 18.2 Kg of CO2</p>
+                <p><strong>This Month:</strong> 90.9 Kg of CO2</p>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <h2>Charts</h2>
+            <div class="chart-row">
+                <!-- Change in Cost - Line Chart -->
+                <div class="chart-container">
+                    <h3>Change in Cost</h3>
+                    <canvas id="costChart"></canvas>
+                </div>
+
+                <!-- Usage Trends - Bar Chart -->
+                <div class="chart-container">
+                    <h3>Usage Trends</h3>
+                    <canvas id="usageChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Production Trends Table -->
+        <section class="data-section">
+            <h2>Production Trends</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Production (tons)</th>
+                        <th>Price (INR/ton)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2021</td>
+                        <td>450,000</td>
+                        <td>8,285</td>
+                    </tr>
+                    <tr>
+                        <td>2022</td>
+                        <td>500,000</td>
+                        <td>8,715</td>
+                    </tr>
+                    <tr>
+                        <td>2023</td>
+                        <td>550,000</td>
+                        <td>9,152</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-mode");
+                document.querySelector(".navbar").classList.add("dark-mode");
+                document.querySelector(".dashboard-container").classList.add("dark-mode");
+                document.querySelectorAll(".stat-card").forEach(el => el.classList.add("dark-mode"));
+                document.querySelectorAll(".data-section").forEach(el => el.classList.add("dark-mode"));
+            }
+        });
+        // Change in Cost - Line Chart
+        const costCtx = document.getElementById('costChart').getContext('2d');
+        const costChart = new Chart(costCtx, {
+            type: 'line',
+            data: {
+                labels: ['May', 'Jun', 'Jul', 'Aug'],
+                datasets: [{
+                    label: 'Cost (INR)',
+                    data: [24421, 26151, 27041, 27913],
+                    borderColor: '#6c5ce7', // Purple
+                    backgroundColor: 'rgba(108, 92, 231, 0.1)', // Light purple fill
+                    fill: true,
+                    borderWidth: 2,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#6c5ce7',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#e0e0e0',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Cost (INR)',
+                            color: '#333',
+                        },
+                    },
+                    x: {
+                        grid: {
+                            color: '#e0e0e0',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Month',
+                            color: '#333',
+                        },
+                    },
+                },
+            }
+        });
+
+        // Usage Trends - Bar Chart
+        const usageCtx = document.getElementById('usageChart').getContext('2d');
+        const usageChart = new Chart(usageCtx, {
+            type: 'bar',
+            data: {
+                labels: ['May', 'Jun', 'Jul', 'Aug'],
+                datasets: [{
+                    label: 'Usage (kWh)',
+                    data: [70, 75, 80, 85],
+                    backgroundColor: '#00b894', // Green
+                    borderColor: '#00b894',
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#e0e0e0',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Usage (kWh)',
+                            color: '#333',
+                        },
+                    },
+                    x: {
+                        grid: {
+                            color: '#e0e0e0',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Month',
+                            color: '#333',
+                        },
+                    },
+                },
+            }
+        });
+    </script>
+</body>
+</html>

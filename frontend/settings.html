@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .settings-container {
+            width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .settings-header {
+            font-size: 2rem;
+            font-weight: bold;
+            padding-bottom: 10px;
+        }
+        .settings-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .hidden-content {
+            display: none;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .separator {
+            border-bottom: 1px solid #ccc;
+            margin: 10px 0;
+        }
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .toggle-switch input {
+            display: none;
+        }
+        .toggle-switch .slider {
+            width: 40px;
+            height: 20px;
+            background: #ccc;
+            display: inline-block;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+        }
+        .toggle-switch input:checked + .slider {
+            background: #4CAF50;
+        }
+        .back-button {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1rem;
+            color: #007bff;
+            cursor: pointer;
+        }
+        .dark-mode {
+    background-color: #222;
+    color: #fff;
+}
+
+.dark-mode .settings-container {
+    background-color: #333;
+    color: #fff;
+}
+
+.dark-mode .settings-row {
+    border-bottom: 1px solid #555;
+}
+
+.dark-mode .hidden-content {
+    background: #444;
+}
+
+.dark-mode .toggle-switch .slider {
+    background: #777;
+}
+
+.dark-mode .toggle-switch input:checked + .slider {
+    background: #4CAF50;
+}
+
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-header">Settings</div>
+        
+        <div class="settings-row" onclick="toggleContent('personalInfo')">
+            <div>
+                <i class="fas fa-user"></i> Personal Information
+            </div>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div id="personalInfo" class="hidden-content">
+            <p><strong>Name:</strong> <span id="user-name">Loading...</span></p>
+            <div class="separator"></div>
+            <p><strong>Email:</strong> <span id="user-email">Loading...</span></p>
+            <div class="separator"></div>
+            <p><strong>Phone number:</strong> +91 8612134871</p>
+            <div class="separator"></div>
+            <p><strong>Address:</strong> #122, Friends layout, Seegehalli, K R Puram, Bangalore-560049</p>
+            <div class="separator"></div>
+            <p><strong>Password:</strong> ******** <button class="change-password-btn" onclick="changePassword()">Change Password</button></p>
+        </div>
+        
+        <div class="settings-row" onclick="toggleContent('theme')">
+            <div>
+                <i class="fas fa-moon"></i> Theme
+            </div>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div id="theme" class="hidden-content">
+            <div class="theme-toggle-container">
+                <p>Toggle light or dark mode.</p>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="theme-toggle" onclick="toggleTheme()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="settings-row" onclick="toggleContent('helpSupport')">
+            <div>
+                <i class="fas fa-question-circle"></i> Help & Support
+            </div>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div id="helpSupport" class="hidden-content">
+            <p>For coal-related inquiries, visit our FAQ section:</p>
+            <ul>
+                <li><a href="faq.html">Coal Industry FAQs</a></li>
+                <li><a href="contact.html">Contact Coal Support</a></li>
+            </ul>
+        </div>
+
+        <div class="settings-row" onclick="toggleContent('version')">
+            <div>
+                <i class="fas fa-check-circle"></i> Version 4.128.134.511
+            </div>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <div id="version" class="hidden-content">
+            <p>You're currently using Version 4.128.134.511. No updates are available.</p>
+        </div>
+        
+        <div class="back-button" onclick="goToDashboard()">Back to Dashboard</div>
+    </div>
+
+    <script>
+        function toggleContent(sectionId) {
+            const content = document.getElementById(sectionId);
+            content.style.display = content.style.display === "block" ? "none" : "block";
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle("dark-mode");
+            localStorage.setItem("theme", body.classList.contains("dark-mode") ? "dark" : "light");
+        }
+
+        function changePassword() {
+            alert("Redirecting to change password page...");
+        }
+
+        function goToDashboard() {
+            window.location.href = "dashboard.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-mode");
+                document.getElementById('theme-toggle').checked = true;
+            }
+
+            const storedName = localStorage.getItem("username");
+            const storedEmail = localStorage.getItem("email");
+            document.getElementById("user-name").textContent = storedName ? storedName : "Not set";
+            document.getElementById("user-email").textContent = storedEmail ? storedEmail : "Not set";
+        });
+    </script>
+</body>
+</html>
